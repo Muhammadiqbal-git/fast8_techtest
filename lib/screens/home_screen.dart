@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   final List<String> items = const [
     "Terpopuler",
@@ -19,8 +19,6 @@ class HomeScreen extends StatelessWidget {
     "Z to A",
     "Termurah"
   ];
-  final DraggableScrollableController _bottomSheetController =
-      DraggableScrollableController();
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +60,7 @@ class HomeScreen extends StatelessWidget {
           InkWell(
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ProfileScreen(),
+                builder: (context) => const ProfileScreen(),
               ));
             },
             child: CircleAvatar(
@@ -222,7 +220,7 @@ class HomeScreen extends StatelessWidget {
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           crossAxisCount: 2,
-                          mainAxisSpacing: 10,
+                          mainAxisSpacing: 30,
                           childAspectRatio: (1 / .8),
                           children: state.listProduct
                               .map((e) => ProductCard(
@@ -250,7 +248,7 @@ class HomeScreen extends StatelessWidget {
                 expand: true,
                 minChildSize: 0.14,
                 initialChildSize: 0.14,
-                maxChildSize: 0.38,
+                maxChildSize: 0.44,
                 snap: true,
                 controller:
                     context.read<BottomNavCubit>().bottomSheetController,
@@ -317,67 +315,74 @@ class HomeScreen extends StatelessWidget {
                                 ],
                                 colors: [
                                   Colors.white,
-                                  Colors.blueGrey.shade50
+                                  Colors.blueGrey.shade100
                                 ]),
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(50),
                                 topRight: Radius.circular(50)),
                           ),
-                          child: GridView.count(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 20, horizontal: 40),
-                            controller: scrollController,
-                            shrinkWrap: true,
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 40,
-                            mainAxisSpacing: 10,
-                            childAspectRatio: 1,
+                          child: Column(
                             children: [
-                              BottomNavButton(
-                                iconPath: "assets/icons/home.svg",
-                                label: 'Beranda',
-                                selected: state.activeIdx == 0,
-                                onTap: () {
-                                  print(1);
-                                  context.read<BottomNavCubit>().goTo(0);
-                                },
+                              GridView.count(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 20, horizontal: 40),
+                                controller: scrollController,
+                                shrinkWrap: true,
+                                crossAxisCount: 3,
+                                crossAxisSpacing: 40,
+                                mainAxisSpacing: 10,
+                                childAspectRatio: 1,
+                                children: [
+                                  BottomNavButton(
+                                    iconPath: "assets/icons/home.svg",
+                                    label: 'Beranda',
+                                    selected: state.activeIdx == 0,
+                                    onTap: () {
+                                      print(1);
+                                      context.read<BottomNavCubit>().goTo(0);
+                                    },
+                                  ),
+                                  BottomNavButton(
+                                    iconPath: "assets/icons/search.svg",
+                                    label: 'Cari',
+                                    selected: state.activeIdx == 1,
+                                    onTap: () {
+                                      print(2);
+                                      context.read<BottomNavCubit>().goTo(1);
+                                    },
+                                  ),
+                                  BottomNavButton(
+                                    iconPath: "assets/icons/cart.svg",
+                                    label: 'Keranjang',
+                                    selected: state.activeIdx == 2,
+                                    notif: 0,
+                                  ),
+                                  BottomNavButton(
+                                    iconPath: "assets/icons/home.svg",
+                                    label: 'Daftar Transaksi',
+                                    selected: state.activeIdx == 3,
+                                    notif: 0,
+                                  ),
+                                  BottomNavButton(
+                                    iconPath: "assets/icons/perencanaan.svg",
+                                    label: 'Voucher Saya',
+                                    selected: state.activeIdx == 3,
+                                  ),
+                                  BottomNavButton(
+                                    iconPath: "assets/icons/loc.svg",
+                                    label: 'Alamat Pengiriman',
+                                    selected: state.activeIdx == 3,
+                                  ),
+                                  BottomNavButton(
+                                    iconPath: "assets/icons/urun.svg",
+                                    label: 'Daftar Teman',
+                                    selected: state.activeIdx == 3,
+                                  ),
+                                ],
                               ),
-                              BottomNavButton(
-                                iconPath: "assets/icons/search.svg",
-                                label: 'Cari',
-                                selected: state.activeIdx == 1,
-                                onTap: () {
-                                  print(2);
-                                  context.read<BottomNavCubit>().goTo(1);
-                                },
-                              ),
-                              BottomNavButton(
-                                iconPath: "assets/icons/cart.svg",
-                                label: 'Keranjang',
-                                selected: state.activeIdx == 2,
-                                notif: 0,
-                              ),
-                              BottomNavButton(
-                                iconPath: "assets/icons/home.svg",
-                                label: 'Daftar Transaksi',
-                                selected: state.activeIdx == 3,
-                                notif: 0,
-                              ),
-                              BottomNavButton(
-                                iconPath: "assets/icons/perencanaan.svg",
-                                label: 'Voucher Saya',
-                                selected: state.activeIdx == 3,
-                              ),
-                              BottomNavButton(
-                                iconPath: "assets/icons/loc.svg",
-                                label: 'Alamat Pengiriman',
-                                selected: state.activeIdx == 3,
-                              ),
-                              BottomNavButton(
-                                iconPath: "assets/icons/urun.svg",
-                                label: 'Daftar Teman',
-                                selected: state.activeIdx == 3,
-                              ),
+                              SizedBox(
+                                height: getHeight(context, 5),
+                              )
                             ],
                           ),
                         ),
@@ -422,11 +427,11 @@ class HomeScreen extends StatelessWidget {
         Container(
           width: getWidth(context),
           alignment: Alignment.center,
-          child: Wrap(
-            spacing: getWidth(context, 5),
-            runSpacing: 10,
-            crossAxisAlignment: WrapCrossAlignment.start,
-            children: const [
+          child: GridView.count(
+            physics: NeverScrollableScrollPhysics(),
+            crossAxisCount: 4,
+            shrinkWrap: true,
+            children: [
               HomeMenuButton(
                 iconPath: "assets/icons/urun.svg",
                 iconColor: Colors.brown,
@@ -512,11 +517,11 @@ class HomeScreen extends StatelessWidget {
         Container(
           width: getWidth(context),
           alignment: Alignment.center,
-          child: Wrap(
-            spacing: getWidth(context, 5),
-            runSpacing: 10,
-            crossAxisAlignment: WrapCrossAlignment.start,
-            children: const [
+          child: GridView.count(
+            crossAxisCount: 4,
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            children: [
               HomeMenuButton(
                 iconPath: "assets/icons/hobi.svg",
                 iconColor: Colors.blue,
@@ -606,7 +611,7 @@ class BottomNavButton extends StatelessWidget {
                         BlendMode.srcIn),
                   ),
                 ),
-          SizedBox(
+          const SizedBox(
             height: 6,
           ),
           Text(

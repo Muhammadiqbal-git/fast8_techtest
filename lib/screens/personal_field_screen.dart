@@ -102,7 +102,7 @@ class PersonalFieldScreen extends StatelessWidget {
                               ),
                               Container(
                                 height: 4,
-                                width: getWidth(context, 12),
+                                width: getWidth(context, 9),
                                 color: state.processIdx >= 0
                                     ? Theme.of(context).primaryOrange
                                     : Theme.of(context)
@@ -111,7 +111,7 @@ class PersonalFieldScreen extends StatelessWidget {
                               ),
                               Container(
                                 height: 4,
-                                width: getWidth(context, 12),
+                                width: getWidth(context, 9),
                                 color: state.processIdx >= 1
                                     ? Theme.of(context).primaryOrange
                                     : Theme.of(context)
@@ -160,7 +160,7 @@ class PersonalFieldScreen extends StatelessWidget {
                               ),
                               Container(
                                 height: 4,
-                                width: getWidth(context, 12),
+                                width: getWidth(context, 9),
                                 color: state.processIdx >= 1
                                     ? Theme.of(context).primaryOrange
                                     : Theme.of(context)
@@ -169,7 +169,7 @@ class PersonalFieldScreen extends StatelessWidget {
                               ),
                               Container(
                                 height: 4,
-                                width: getWidth(context, 12),
+                                width: getWidth(context, 9),
                                 color: state.processIdx >= 2
                                     ? Theme.of(context).primaryOrange
                                     : Theme.of(context)

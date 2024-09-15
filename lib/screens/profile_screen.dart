@@ -33,31 +33,47 @@ class ProfileScreen extends StatelessWidget {
         child: Column(children: [
           Row(
             children: [
-              CircleAvatar(
-                backgroundColor: Colors.grey,
-                radius: 32,
-                child: Text(
-                  "M",
-                  style: headerBold.copyWith(fontSize: 22, color: Colors.white),
-                ),
+              BlocBuilder<PersonalInfoCubit, PersonalInfoState>(
+                builder: (context, state) {
+                  String initial = "P";
+                  if (state.nama != "") {
+                    initial = state.nama[0];
+                  }
+                  return CircleAvatar(
+                    backgroundColor: Colors.grey,
+                    radius: 32,
+                    child: Text(
+                      initial,
+                      style: headerBold.copyWith(
+                          fontSize: 22, color: Colors.white),
+                    ),
+                  );
+                },
               ),
               SizedBox(
                 width: 10,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Muhammad Iqbal",
-                    style: headerBold,
-                  ),
-                  Text(
-                    "Masuk reguler dengan email",
-                    style: header,
-                  )
-                ],
+              BlocBuilder<PersonalInfoCubit, PersonalInfoState>(
+                builder: (context, state) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        state.nama,
+                        style: headerBold,
+                      ),
+                      Text(
+                        "Masuk reguler dengan email",
+                        style: header,
+                      )
+                    ],
+                  );
+                },
               ),
             ],
+          ),
+          SizedBox(
+            height: 18,
           ),
           Container(
             padding: EdgeInsets.symmetric(vertical: 10),

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class BottomNavCubit extends Cubit<BottomNavState> {
   BottomNavCubit() : super(BottomNavState(isDetail: false, activeIdx: 0)) {
     bottomSheetController.addListener(() {
-      if (bottomSheetController.size >= 0.37) {
+      if (bottomSheetController.size >= 0.44) {
         if (state.isDetail == false) {
           emit(BottomNavState(isDetail: true, activeIdx: state.activeIdx));
         }
@@ -21,7 +21,7 @@ class BottomNavCubit extends Cubit<BottomNavState> {
 
   void toggleDetail() {
     print(state.isDetail);
-    double position = 0.38;
+    double position = 0.44;
     if (state.isDetail) {
       position = 0.14;
     }
