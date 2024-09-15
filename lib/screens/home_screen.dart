@@ -1,10 +1,26 @@
+import 'package:fast8_techtest/blocs/bottom_nav_cubit.dart';
+import 'package:fast8_techtest/blocs/explore_wellness_cubit.dart';
+import 'package:fast8_techtest/blocs/home_cubit.dart';
 import 'package:fast8_techtest/global_variable.dart';
+import 'package:fast8_techtest/screens/profile_screen.dart';
 import 'package:fast8_techtest/themeColor.dart';
+import 'package:fast8_techtest/widgets/menu_button.dart';
+import 'package:fast8_techtest/widgets/product_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+
+  final List<String> items = const [
+    "Terpopuler",
+    "A to Z",
+    "Z to A",
+    "Termurah"
+  ];
+  final DraggableScrollableController _bottomSheetController =
+      DraggableScrollableController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +59,19 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
           ),
-          CircleAvatar(
-            backgroundColor: Colors.grey,
-            radius: 20,
-            child: Text(
-              "M",
-              style: headerBold.copyWith(fontSize: 22, color: Colors.white),
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => ProfileScreen(),
+              ));
+            },
+            child: CircleAvatar(
+              backgroundColor: Colors.grey,
+              radius: 20,
+              child: Text(
+                "M",
+                style: headerBold.copyWith(fontSize: 22, color: Colors.white),
+              ),
             ),
           ),
           const SizedBox(
@@ -57,115 +80,330 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       backgroundColor: Theme.of(context).primaryOrange,
-      body: SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(minHeight: getHeight(context)),
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(35))),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  height: 48,
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(50)),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          height: 46,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).primaryOrange,
-                              borderRadius: BorderRadius.circular(50)),
-                          child: Text(
-                            "Payuung Pribadi",
-                            style: body.copyWith(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      Expanded(
-                        child: Container(
-                          height: 40,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(50)),
-                          child: Text(
-                            "Payuung Karyawan",
-                            style: body.copyWith(color: Colors.grey.shade500),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                _produkKeuangan(context),
-                const SizedBox(
-                  height: 15,
-                ),
-                _kategoriPilihan(context),
-                const SizedBox(
-                  height: 15,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: getHeight(context)),
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(40),
+                        topRight: Radius.circular(35))),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Kategori Pilihan',
-                      style: headerBold,
-                    ),
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 4, horizontal: 8),
+                      height: 48,
+                      padding: const EdgeInsets.all(6),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).buttonBackground,
-                        borderRadius: BorderRadius.circular(50),
-                      ),
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(50)),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            "Terpopuler",
-                            style: subHeader,
+                          Expanded(
+                            child: Container(
+                              height: 46,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context).primaryOrange,
+                                  borderRadius: BorderRadius.circular(50)),
+                              child: Text(
+                                "Payuung Pribadi",
+                                style: body.copyWith(color: Colors.white),
+                              ),
+                            ),
                           ),
                           const SizedBox(
-                            width: 5,
+                            width: 4,
                           ),
-                          Icon(Icons.keyboard_arrow_down_rounded)
+                          Expanded(
+                            child: Container(
+                              height: 40,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(50)),
+                              child: Text(
+                                "Payuung Karyawan",
+                                style:
+                                    body.copyWith(color: Colors.grey.shade500),
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    _produkKeuangan(context),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    _kategoriPilihan(context),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Explore Wellness',
+                          style: headerBold,
+                        ),
+                        Container(
+                            width: 120,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).buttonBackground,
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            alignment: Alignment.center,
+                            child: BlocBuilder<HomeCubit, HomeState>(
+                              builder: (context, state) {
+                                return DropdownButton(
+                                  dropdownColor:
+                                      Theme.of(context).buttonBackground,
+                                  value: state.selectedFilter,
+                                  isExpanded: true,
+                                  isDense: true,
+                                  style:
+                                      subHeader.copyWith(color: Colors.black),
+                                  icon: const Icon(
+                                      Icons.keyboard_arrow_down_rounded),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 2),
+                                  selectedItemBuilder: (context) {
+                                    return items.map((e) => Text(e)).toList();
+                                  },
+                                  items: items
+                                      .map(
+                                        (e) => DropdownMenuItem(
+                                          value: e,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(e),
+                                              if (state.selectedFilter == e)
+                                                Icon(
+                                                  Icons.circle,
+                                                  size: 10,
+                                                  color: Theme.of(context)
+                                                      .primaryOrange,
+                                                )
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                  onChanged: (value) {
+                                    if (value == null) {
+                                      return;
+                                    }
+                                    context
+                                        .read<HomeCubit>()
+                                        .setFilterWellness(value!);
+                                  },
+                                );
+                              },
+                            )),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    BlocBuilder<ExploreWellnessCubit, ExploreWellnessState>(
+                      builder: (context, state) {
+                        return GridView.count(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: (1 / .8),
+                          children: state.listProduct
+                              .map((e) => ProductCard(
+                                    imagePath: e.imgUrl,
+                                    desc: e.desc,
+                                    price: double.parse(e.price),
+                                    discountPercent:
+                                        double.tryParse(e.disc ?? "0xFF"),
+                                  ))
+                              .toList(),
+                        );
+                      },
+                    ),
+                    SizedBox(
+                      height: getHeight(context, 10),
+                    )
                   ],
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  height: 180,
-                  color: Colors.greenAccent,
-                ),
-                Container(
-                  height: 980,
-                  color: Colors.lightGreen,
-                ),
-              ],
+              ),
             ),
           ),
-        ),
+          Positioned(child: BlocBuilder<BottomNavCubit, BottomNavState>(
+            builder: (context, state) {
+              return DraggableScrollableSheet(
+                expand: true,
+                minChildSize: 0.14,
+                initialChildSize: 0.14,
+                maxChildSize: 0.38,
+                snap: true,
+                controller:
+                    context.read<BottomNavCubit>().bottomSheetController,
+                builder: (context, scrollController) {
+                  return Stack(
+                    alignment: Alignment.topCenter,
+                    clipBehavior: Clip.none,
+                    children: [
+                      Positioned(
+                        top: 0,
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.black.withOpacity(0.2),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 15,
+                        child: Container(
+                          height: 60,
+                          width: getWidth(context),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.2),
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(50),
+                                topRight: Radius.circular(50)),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 2,
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            gradient: const LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.white,
+                                  Colors.white,
+                                  Colors.transparent
+                                ]),
+                          ),
+                          alignment: Alignment.topCenter,
+                        ),
+                      ),
+                      Positioned(
+                        top: 17,
+                        right: 0,
+                        left: 0,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                stops: [
+                                  0.7,
+                                  1.2
+                                ],
+                                colors: [
+                                  Colors.white,
+                                  Colors.blueGrey.shade50
+                                ]),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(50),
+                                topRight: Radius.circular(50)),
+                          ),
+                          child: GridView.count(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 20, horizontal: 40),
+                            controller: scrollController,
+                            shrinkWrap: true,
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 40,
+                            mainAxisSpacing: 10,
+                            childAspectRatio: 1,
+                            children: [
+                              BottomNavButton(
+                                iconPath: "assets/icons/home.svg",
+                                label: 'Beranda',
+                                selected: state.activeIdx == 0,
+                                onTap: () {
+                                  print(1);
+                                  context.read<BottomNavCubit>().goTo(0);
+                                },
+                              ),
+                              BottomNavButton(
+                                iconPath: "assets/icons/search.svg",
+                                label: 'Cari',
+                                selected: state.activeIdx == 1,
+                                onTap: () {
+                                  print(2);
+                                  context.read<BottomNavCubit>().goTo(1);
+                                },
+                              ),
+                              BottomNavButton(
+                                iconPath: "assets/icons/cart.svg",
+                                label: 'Keranjang',
+                                selected: state.activeIdx == 2,
+                                notif: 0,
+                              ),
+                              BottomNavButton(
+                                iconPath: "assets/icons/home.svg",
+                                label: 'Daftar Transaksi',
+                                selected: state.activeIdx == 3,
+                                notif: 0,
+                              ),
+                              BottomNavButton(
+                                iconPath: "assets/icons/perencanaan.svg",
+                                label: 'Voucher Saya',
+                                selected: state.activeIdx == 3,
+                              ),
+                              BottomNavButton(
+                                iconPath: "assets/icons/loc.svg",
+                                label: 'Alamat Pengiriman',
+                                selected: state.activeIdx == 3,
+                              ),
+                              BottomNavButton(
+                                iconPath: "assets/icons/urun.svg",
+                                label: 'Daftar Teman',
+                                selected: state.activeIdx == 3,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 0,
+                        child: InkWell(
+                          onTap: () {
+                            context.read<BottomNavCubit>().toggleDetail();
+                          },
+                          child: Icon(
+                            state.isDetail
+                                ? Icons.keyboard_arrow_down_rounded
+                                : Icons.keyboard_arrow_up_rounded,
+                            size: 36,
+                            color: Colors.blueGrey,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ))
+        ],
       ),
     );
   }
@@ -186,6 +424,7 @@ class HomeScreen extends StatelessWidget {
           alignment: Alignment.center,
           child: Wrap(
             spacing: getWidth(context, 5),
+            runSpacing: 10,
             crossAxisAlignment: WrapCrossAlignment.start,
             children: const [
               HomeMenuButton(
@@ -275,46 +514,47 @@ class HomeScreen extends StatelessWidget {
           alignment: Alignment.center,
           child: Wrap(
             spacing: getWidth(context, 5),
+            runSpacing: 10,
             crossAxisAlignment: WrapCrossAlignment.start,
             children: const [
               HomeMenuButton(
-                iconPath: "assets/icons/urun.svg",
-                iconColor: Colors.brown,
+                iconPath: "assets/icons/hobi.svg",
+                iconColor: Colors.blue,
                 label: "Hobi",
               ),
               HomeMenuButton(
-                iconPath: "assets/icons/haji.svg",
-                iconColor: Colors.brown,
+                iconPath: "assets/icons/merchant.svg",
+                iconColor: Colors.lightBlueAccent,
                 label: "Merchandise",
               ),
               HomeMenuButton(
-                iconPath: "assets/icons/fin_checkup.svg",
-                iconColor: Colors.yellow,
+                iconPath: "assets/icons/sehat.svg",
+                iconColor: Colors.redAccent,
                 label: "Gaya Hidup Sehat",
               ),
               HomeMenuButton(
-                iconPath: "assets/icons/car_crash.svg",
+                iconPath: "assets/icons/konsul.svg",
                 iconColor: Colors.blueGrey,
                 label: "Konseling & Rohani",
               ),
               HomeMenuButton(
-                iconPath: "assets/icons/house_burn.svg",
-                iconColor: Colors.red,
+                iconPath: "assets/icons/self_dev.svg",
+                iconColor: Colors.deepPurpleAccent,
                 label: "Self Development",
               ),
               HomeMenuButton(
-                iconPath: "assets/icons/house_burn.svg",
-                iconColor: Colors.red,
+                iconPath: "assets/icons/perencanaan.svg",
+                iconColor: Colors.green,
                 label: "Perencanaan Keuangan",
               ),
               HomeMenuButton(
-                iconPath: "assets/icons/house_burn.svg",
+                iconPath: "assets/icons/medis.svg",
                 iconColor: Colors.red,
                 label: "Konsultasi Medis",
               ),
               HomeMenuButton(
-                iconPath: "assets/icons/house_burn.svg",
-                iconColor: Colors.red,
+                iconPath: "assets/icons/more.svg",
+                iconColor: Colors.black,
                 label: "Lihat Semua",
               ),
             ],
@@ -325,47 +565,59 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class HomeMenuButton extends StatelessWidget {
+class BottomNavButton extends StatelessWidget {
   final String iconPath;
-  final Color iconColor;
   final String label;
-  final bool isNew;
-  const HomeMenuButton({
+  final bool selected;
+  final Function()? onTap;
+  final int? notif;
+  const BottomNavButton({
     super.key,
     required this.iconPath,
-    required this.iconColor,
     required this.label,
-    this.isNew = false,
+    this.onTap,
+    this.notif,
+    this.selected = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Badge(
-          isLabelVisible: isNew,
-          label: Text(
-            "New",
-            style: body.copyWith(fontSize: 9),
+    return InkWell(
+      onTap: onTap,
+      child: Column(
+        children: [
+          notif == null
+              ? SvgPicture.asset(
+                  iconPath,
+                  height: 30,
+                  colorFilter: ColorFilter.mode(
+                      selected ? Theme.of(context).primaryOrange : Colors.black,
+                      BlendMode.srcIn),
+                )
+              : Badge.count(
+                  count: notif!,
+                  child: SvgPicture.asset(
+                    iconPath,
+                    height: 30,
+                    colorFilter: ColorFilter.mode(
+                        selected
+                            ? Theme.of(context).primaryOrange
+                            : Colors.black,
+                        BlendMode.srcIn),
+                  ),
+                ),
+          SizedBox(
+            height: 6,
           ),
-          child: SvgPicture.asset(
-            iconPath,
-            height: 28,
-            colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
-          ),
-        ),
-        SizedBox(
-          height: 2,
-        ),
-        SizedBox(
-          width: 74,
-          child: Text(
+          Text(
             label,
-            style: body,
             textAlign: TextAlign.center,
-          ),
-        )
-      ],
+            style: body.copyWith(
+              color: selected ? Theme.of(context).primaryOrange : Colors.black,
+            ),
+          )
+        ],
+      ),
     );
   }
 }
